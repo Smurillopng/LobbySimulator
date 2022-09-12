@@ -1,0 +1,82 @@
+{
+	"Version": 3,
+	"Meta": {
+		"Duration": 2,
+		"Fps": 30.0,
+		"Loop": true,
+		"AreBeziersRestricted": true,
+		"CurveCount": 3,
+		"TotalSegmentCount": 6,
+		"TotalPointCount": 21,
+		"UserDataCount": 0,
+		"TotalUserDataSize": 0
+	},
+	"Curves": [
+		{
+			"Target": "Parameter",
+			"Id": "ParamBreath",
+			"Segments": [
+				0,
+				-1,
+				1,
+				0.333,
+				-1,
+				0.667,
+				1,
+				1,
+				1,
+				1,
+				1.333,
+				1,
+				1.667,
+				-1,
+				2,
+				-1
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamCaudaAcena",
+			"Segments": [
+				0,
+				-2,
+				1,
+				0.333,
+				-2,
+				0.667,
+				2,
+				1,
+				2,
+				1,
+				1.333,
+				2,
+				1.667,
+				-2,
+				2,
+				-2
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamOrelhaPhys",
+			"Segments": [
+				0,
+				2,
+				1,
+				0.333,
+				2,
+				0.667,
+				-2,
+				1,
+				-2,
+				1,
+				1.333,
+				-2,
+				1.667,
+				2,
+				2,
+				2
+			]
+		}
+	]
+}

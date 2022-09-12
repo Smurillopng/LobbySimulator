@@ -1,0 +1,231 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "ParamGroup",
+			"Name": "Angle X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "ParamGroup",
+			"Name": "Angle Y"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "ParamGroup",
+			"Name": "Angle Z"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "ParamGroup",
+			"Name": "EyeL Open"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "ParamGroup",
+			"Name": "EyeR Open"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "ParamGroup",
+			"Name": "Eyeball X"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "ParamGroup",
+			"Name": "Eyeball Y"
+		},
+		{
+			"Id": "ParamBrowLAngle",
+			"GroupId": "ParamGroup",
+			"Name": "BrowL Angle"
+		},
+		{
+			"Id": "ParamBrowRAngle",
+			"GroupId": "ParamGroup",
+			"Name": "BrowR Angle"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "ParamGroup",
+			"Name": "Mouth Form"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "ParamGroup",
+			"Name": "Mouth Open"
+		},
+		{
+			"Id": "ParamArmL_Z",
+			"GroupId": "ParamGroup",
+			"Name": "ArmL_Z"
+		},
+		{
+			"Id": "ParamArmR_Z",
+			"GroupId": "ParamGroup",
+			"Name": "ArmR_Z"
+		},
+		{
+			"Id": "ParamGlassEmptiness",
+			"GroupId": "ParamGroup",
+			"Name": "GlassEmptiness"
+		},
+		{
+			"Id": "ParamCocktailTurn",
+			"GroupId": "ParamGroup",
+			"Name": "CocktailTurn"
+		},
+		{
+			"Id": "ParamCocktailPour",
+			"GroupId": "ParamGroup",
+			"Name": "Cocktail Pour"
+		},
+		{
+			"Id": "ParamBContinuous",
+			"GroupId": "ParamGroup",
+			"Name": "Continuous"
+		},
+		{
+			"Id": "ParamEyesNormal",
+			"GroupId": "ParamGroup3",
+			"Name": "EyesNormal"
+		},
+		{
+			"Id": "ParamEyesScared",
+			"GroupId": "ParamGroup3",
+			"Name": "EyesScared"
+		},
+		{
+			"Id": "ParamEyesExcited",
+			"GroupId": "ParamGroup3",
+			"Name": "EyesExcited"
+		},
+		{
+			"Id": "ParamDrinkColor",
+			"GroupId": "ParamGroup3",
+			"Name": "Drink Color"
+		},
+		{
+			"Id": "ParamItem",
+			"GroupId": "ParamGroup3",
+			"Name": "Item"
+		},
+		{
+			"Id": "ParamItemDrop",
+			"GroupId": "ParamGroup4",
+			"Name": "Item Drop"
+		},
+		{
+			"Id": "ParamItemBack",
+			"GroupId": "ParamGroup4",
+			"Name": "Item Back"
+		},
+		{
+			"Id": "ParamDrink_X1",
+			"GroupId": "ParamGroup2",
+			"Name": "Drink_X1"
+		},
+		{
+			"Id": "ParamDrink_X2",
+			"GroupId": "ParamGroup2",
+			"Name": "Drink_X2"
+		},
+		{
+			"Id": "ParamDrink_Y1",
+			"GroupId": "ParamGroup2",
+			"Name": "Drink_Y1"
+		},
+		{
+			"Id": "ParamDrink_Y2",
+			"GroupId": "ParamGroup2",
+			"Name": "Drink_Y2"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "Normal"
+		},
+		{
+			"Id": "ParamGroup3",
+			"GroupId": "",
+			"Name": "Expressions"
+		},
+		{
+			"Id": "ParamGroup4",
+			"GroupId": "",
+			"Name": "Animation"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "Physics"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "CocktailPasta",
+			"Name": "CocktailPasta"
+		},
+		{
+			"Id": "Part2",
+			"Name": "LiquidoVoa"
+		},
+		{
+			"Id": "Membros",
+			"Name": "Membros"
+		},
+		{
+			"Id": "Olhos",
+			"Name": "Olhos"
+		},
+		{
+			"Id": "Copo",
+			"Name": "Copo"
+		},
+		{
+			"Id": "Liquido",
+			"Name": "Liquido"
+		},
+		{
+			"Id": "ItensVoa",
+			"Name": "ItensVoa"
+		},
+		{
+			"Id": "Bracos",
+			"Name": "Bracos"
+		},
+		{
+			"Id": "Pernas",
+			"Name": "Pernas"
+		},
+		{
+			"Id": "Olhos_E",
+			"Name": "Olhos_E"
+		},
+		{
+			"Id": "Olhos_D",
+			"Name": "Olhos_D"
+		},
+		{
+			"Id": "Itens",
+			"Name": "Itens"
+		}
+	],
+	"CombinedParameters": [
+		[
+			"ParamEyeBallX",
+			"ParamEyeBallY"
+		],
+		[
+			"ParamDrink_X1",
+			"ParamDrink_X2"
+		],
+		[
+			"ParamDrink_Y1",
+			"ParamDrink_Y2"
+		]
+	]
+}
