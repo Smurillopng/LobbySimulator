@@ -5,17 +5,7 @@
 		"Textures": [
 			"Cup_Martini.2048/texture_00.png"
 		],
-		"DisplayInfo": "Cup_Martini.cdi3.json",
-		"Expressions": [
-			{
-				"Name": "Angry",
-				"File": "Cup_Martini_Angry.exp3.json"
-			},
-			{
-				"Name": "Sad",
-				"File": "Cup_Martini_Sad.exp3.json"
-			}
-		]
+		"DisplayInfo": "Cup_Martini.cdi3.json"
 	},
 	"Groups": [
 		{
@@ -33,6 +23,5 @@
 				"ParamBrowRAngle"
 			]
 		}
-	],
-	"HitAreas": []
+	]
 }
