@@ -23,19 +23,11 @@ namespace Photon.Pun.Demo.PunBasics
     {
         #region Private Fields
 
-	    [Tooltip("Pixel offset from the player target")]
-        [SerializeField]
-        private Vector3 screenOffset = new Vector3(0f, 30f, 0f);
-
-	    [Tooltip("UI Text to display Player's Name")]
+        [Tooltip("UI Text to display Player's Name")]
 	    [SerializeField]
 	    private Text playerNameText;
 
-	    [Tooltip("UI Slider to display Player's Health")]
-	    [SerializeField]
-	    private Slider playerHealthSlider;
-
-        PlayerManager target;
+	    PlayerManager target;
 
 		float characterControllerHeight;
 
@@ -73,12 +65,6 @@ namespace Photon.Pun.Demo.PunBasics
 				Destroy(this.gameObject);
 				return;
 			}
-
-
-			// Reflect the Player Health
-			if (playerHealthSlider != null) {
-				playerHealthSlider.value = target.Health;
-			}
 		}
 
 		/// <summary>
@@ -99,8 +85,6 @@ namespace Photon.Pun.Demo.PunBasics
 			{
 				targetPosition = targetTransform.position;
 				targetPosition.y += characterControllerHeight;
-				
-				this.transform.position = Camera.main.WorldToScreenPoint (targetPosition) + screenOffset;
 			}
 
 		}

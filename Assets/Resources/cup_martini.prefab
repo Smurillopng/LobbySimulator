@@ -6283,6 +6283,10 @@ GameObject:
   - component: {fileID: 6537559835703582772}
   - component: {fileID: 927684872216215386}
   - component: {fileID: 8150485775482001128}
+  - component: {fileID: 1108222892126098889}
+  - component: {fileID: 4327800543360078867}
+  - component: {fileID: 7261188288571341267}
+  - component: {fileID: -8521003455513120424}
   m_Layer: 0
   m_Name: cup_martini
   m_TagString: Untagged
@@ -6299,7 +6303,7 @@ Transform:
   m_GameObject: {fileID: 7986409247860625382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 7.011269, y: 7.011269, z: 7.011269}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5683831678222925900}
@@ -6503,6 +6507,124 @@ MonoBehaviour:
   itemID: ParamItem
   glassEmptiness: ParamGlassEmptiness
   filledValue: 10
+--- !u!114 &1108222892126098889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986409247860625382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c969a9e4af2a4c85bf96c2a75d9727b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropAction:
+    m_Name: Drop
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ac6ff060-598d-47fa-bdae-685877308d54
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  danceAction:
+    m_Name: Dance
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 3e15434f-ff03-4b67-bdf1-19a81dece0f2
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  waveAction:
+    m_Name: Wave
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b4d22ab3-6c8b-40de-bc0a-a6d61ae3a79a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  pourAction:
+    m_Name: Pour
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 626a47aa-af48-4479-98f6-37a520899067
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+--- !u!114 &4327800543360078867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986409247860625382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 7261188288571341267}
+  - {fileID: -8521003455513120424}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &7261188288571341267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986409247860625382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
+--- !u!114 &-8521003455513120424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986409247860625382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: Pour
+  - Type: 9
+    SynchronizeType: 1
+    Name: Drop
+  - Type: 9
+    SynchronizeType: 1
+    Name: Dance
+  - Type: 9
+    SynchronizeType: 1
+    Name: Wave
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &8154955319629053207
 GameObject:
   m_ObjectHideFlags: 0

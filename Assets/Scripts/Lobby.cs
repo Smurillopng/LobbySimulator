@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -25,14 +24,14 @@ public class Lobby : MonoBehaviourPunCallbacks
             if (player.IsMasterClient)
             {
                 _p1 = player;
-                player1.text = player.NickName;
-                pingP1.text = player.CustomProperties["Ping"].ToString();
+                player1.text = _p1.NickName;
+                pingP1.text = PhotonNetwork.GetPing().ToString();
             }
             else
             {
                 _p2 = player;
-                player2.text = player.NickName;
-                pingP2.text = player.CustomProperties["Ping"].ToString();
+                player2.text = _p2.NickName;
+                pingP2.text = PhotonNetwork.GetPing().ToString();
             }
         }
 
@@ -61,8 +60,6 @@ public class Lobby : MonoBehaviourPunCallbacks
             this.Log("Trying to join room...");
             JoinRoom();
         }
-        
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"Ping", PhotonNetwork.GetPing()}});
     }
 
     private void JoinRoom()
@@ -93,16 +90,18 @@ public class Lobby : MonoBehaviourPunCallbacks
         this.Log("Joined room");
         if (PhotonNetwork.InRoom)
             _currentRoom = gameConfig.roomStartNumber;
-        
+
         switch (PhotonNetwork.CurrentRoom.PlayerCount)
         {
             case 1:
                 this.Log("Player 1 joined");
                 _p1 = PhotonNetwork.LocalPlayer;
+                PhotonNetwork.Instantiate("cup_martini", new Vector3(-6, -2, 0), Quaternion.identity);
                 break;
             case 2:
                 this.Log("Player 2 joined");
                 _p2 = PhotonNetwork.LocalPlayer;
+                PhotonNetwork.Instantiate("cup_martini", new Vector3(6, -2, 0), Quaternion.identity);
                 break;
         }
     }
