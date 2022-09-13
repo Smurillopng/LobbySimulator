@@ -1,4 +1,6 @@
-﻿using Photon.Pun;
+﻿using System.Collections.Generic;
+using ExitGames.Client.Photon;
+using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
@@ -7,9 +9,11 @@ using Utils;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private TMP_Text pingP1, player1, pingP2, player2;
-    
+    [SerializeField] private TMP_Text player1, pingP1, player2, pingP2;
+    [SerializeField] private Config gameConfig;
+
     private Player _p1, _p2;
+    private int _currentRoom;
     
     private void Update()
     {
@@ -22,13 +26,13 @@ public class Lobby : MonoBehaviourPunCallbacks
             {
                 _p1 = player;
                 player1.text = player.NickName;
-                pingP1.text = PhotonNetwork.GetPing().ToString();
+                pingP1.text = player.CustomProperties["Ping"].ToString();
             }
             else
             {
                 _p2 = player;
                 player2.text = player.NickName;
-                pingP2.text = PhotonNetwork.GetPing().ToString();
+                pingP2.text = player.CustomProperties["Ping"].ToString();
             }
         }
 
@@ -42,31 +46,54 @@ public class Lobby : MonoBehaviourPunCallbacks
             player2.text = "Waiting for player...";
             pingP2.text = "...";
         }
-        if (player1.text == player2.text)
-        {
-            player2.text = "Waiting for player...";
-            pingP2.text = "...";
-        }
+
+        if (player1.text != player2.text) return;
+        player2.text = "Waiting for player...";
+        pingP2.text = "...";
     }
     
-
     private void Start()
     {
-        this.Log("Trying to join room...");
-        PhotonNetwork.JoinRandomRoom();
+        _currentRoom = gameConfig.roomStartNumber;
+        
+        if (PhotonNetwork.IsConnected)
+        {
+            this.Log("Trying to join room...");
+            JoinRoom();
+        }
+        
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"Ping", PhotonNetwork.GetPing()}});
+    }
+
+    private void JoinRoom()
+    {
+        PhotonNetwork.JoinOrCreateRoom(
+            Room.CreateRoomName(gameConfig.roomPrefixName, _currentRoom),
+            Room.GetRoomOptions(gameConfig.maxPlayers),
+            TypedLobby.Default);
+    }
+    private void GetNextRoom() => _currentRoom++;
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        this.Log("Failed to join room, trying to create...");
+        GetNextRoom();
+        JoinRoom();
     }
     
-    public override void OnJoinRandomFailed(short returnCode, string message)
+    public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        this.Log("Failed to join random room");
-        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2 }, TypedLobby.Default);
+        this.Log("Failed to create room, trying to join...");
+        GetNextRoom();
+        JoinRoom();
     }
 
     public override void OnJoinedRoom()
     {
-        base.OnJoinedRoom();
         this.Log("Joined room");
-
+        if (PhotonNetwork.InRoom)
+            _currentRoom = gameConfig.roomStartNumber;
+        
         switch (PhotonNetwork.CurrentRoom.PlayerCount)
         {
             case 1:
@@ -99,26 +126,27 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         if (Equals(otherPlayer, _p1))
-        {
             _p1 = null;
-        }
         else if (Equals(otherPlayer, _p2))
-        {
             _p2 = null;
-        }   
+    }
+    
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        this.Log("Room list updated");
+        foreach (var info in roomList)
+            this.Log($"Room {info.Name}, total players: " +
+                     $"{info.PlayerCount}, Max Total players: {info.MaxPlayers}");
     }
 
     public void ExitToMainMenu()
     {
         if (Equals(PhotonNetwork.LocalPlayer, _p1))
-        {
             _p1 = null;
-        }
+        
         else if (Equals(PhotonNetwork.LocalPlayer, _p2))
-        {
             _p2 = null;
-        }
-
+        
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.Disconnect();
         SceneManager.LoadScene("MainMenu");

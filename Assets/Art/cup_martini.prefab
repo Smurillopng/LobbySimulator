@@ -6281,8 +6281,10 @@ GameObject:
   - component: {fileID: 7258254104795080357}
   - component: {fileID: 5664773172596705617}
   - component: {fileID: 6537559835703582772}
+  - component: {fileID: 927684872216215386}
+  - component: {fileID: 8150485775482001128}
   m_Layer: 0
-  m_Name: Cup_Martini
+  m_Name: cup_martini
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6446,7 +6448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b893d4d32dd60bc4c9a2e447d31c6e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExpressionsList: {fileID: 0}
+  ExpressionsList: {fileID: 11400000, guid: 72ca8391a26c57a4594e66d7e6fd395d, type: 2}
   CurrentExpressionIndex: -1
 --- !u!95 &6537559835703582772
 Animator:
@@ -6468,6 +6470,39 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &927684872216215386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986409247860625382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd9e6647bfff7542acb0200ab74bdd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CubismFadeMotionList: {fileID: 11400000, guid: 28db23be554d0d04f8d662f40acc21d7, type: 2}
+--- !u!114 &8150485775482001128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986409247860625382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b9e9a62dec848509165968f32a5b93d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  playerColor: {fileID: 0}
+  playerItem: {fileID: 0}
+  filled: {fileID: 0}
+  colorID: ParamDrinkColor
+  itemID: ParamItem
+  glassEmptiness: ParamGlassEmptiness
+  filledValue: 10
 --- !u!1 &8154955319629053207
 GameObject:
   m_ObjectHideFlags: 0
