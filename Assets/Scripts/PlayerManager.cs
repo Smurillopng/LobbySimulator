@@ -1,24 +1,24 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using Live2D.Cubism.Core;
-using Live2D.Cubism.Framework;
 using Photon.Pun;
-using Photon.Realtime;
+using Utils;
 using Random = System.Random;
 
-public class PlayerManager : MonoBehaviourPunCallbacks
+public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField] private CubismModel player;
     [SerializeField] private CubismParameter playerColor, playerItem, filled;
     [SerializeField] private string colorID ="ParamDrinkColor";
     [SerializeField] private string itemID = "ParamItem";
     [SerializeField] private string glassEmptiness = "ParamGlassEmptiness";
-    [SerializeField] private int filledValue = 10;
-    
+    [SerializeField] private float filledValue = 10;
+    [SerializeField] private float percentage;
+
     private Animator _animator;
     private PlayerInputs _playerInputs;
     private bool _isRefilling, _isFull, _isPlayingAnim;
-    
+    private float _timer, _playerColorValue, _playerItemValue, _filledValue;
+
     private static readonly int Drop = Animator.StringToHash("Drop");
     private static readonly int Dance = Animator.StringToHash("Dance");
     private static readonly int Wave = Animator.StringToHash("Wave");
@@ -36,84 +36,89 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        RandomizeColor();
-        RandomizeItem();
+        if (photonView.IsMine)
+        {
+            photonView.RPC(nameof(RandomizeColor), RpcTarget.All);
+            playerColor.Value = _playerColorValue;
+            photonView.RPC(nameof(RandomizeItem), RpcTarget.All);
+            playerItem.Value = _playerItemValue;
+        }
 
         filled.Value = filledValue;
+        _filledValue = filled.Value;
     }
 
-    private void Update() => Check();
-    
     private void LateUpdate()
     {
-        switch (filled.Value)
-        {
-            case >= 9.8f:
-                _isFull = true;
-                _isRefilling = false;
-                break;
-            case <= 1f:
-                _isFull = false;
-                _isRefilling = true;
-                break;
-        }
+        if (!photonView.IsMine) return;
+        
+        Check();
 
-        if (_isFull && _isPlayingAnim)
+        if (_isPlayingAnim)
         {
-            EmptyGlass();
+            photonView.RPC(nameof(AnimationTimer), RpcTarget.All);
         }
-
-        if (!_isFull)
-        {
-            FillGlass();
-        }
-
-        /*
-        switch (_isRefilling)
-        {
-            case true:
-                _animator.SetBool(Pour, true);
-                break;
-            case false:
-                _animator.SetBool(Pour, false);
-                break;
-        }
-        */
-    }
-    
-    private void RandomizeColor()
-    {
-        var random = new Random();
-        playerColor.Value = random.Next(0, 21);
-    }
-    private void RandomizeItem()
-    {
-        var random = new Random();
-        playerItem.Value = random.Next(0, 4);
+        
+        
+        photonView.RPC(nameof(GlassLiquid), RpcTarget.All);
+        _filledValue = filled.Value;
     }
     
     [PunRPC]
-    public float GetColor()
+    private void GlassLiquid()
     {
-        return playerColor.Value;
+        if (_isFull)
+        {
+            _filledValue -= Time.deltaTime * percentage;
+        }
+        
+        if (_filledValue <= 0)
+        {
+            _isFull = false;
+            _isRefilling = true;
+        }
+        
+        if (_isRefilling)
+        {
+            _filledValue += Time.deltaTime * percentage;
+            if (_filledValue >= filledValue)
+            {
+                _isRefilling = false;
+            }
+        }
+
+        if (_filledValue >= filledValue)
+        {
+            _isFull = true;
+        }
     }
     
-    private void EmptyGlass() => filled.Value -= Time.deltaTime;
-    private void FillGlass() => filled.BlendToValue(CubismParameterBlendMode.Override, 10, Time.deltaTime);
-
+    [PunRPC]
+    private void RandomizeColor()
+    {
+        var random = new Random();
+        _playerColorValue = random.Next(0, 21);
+    }
+    [PunRPC]
+    private void RandomizeItem()
+    {
+        var random = new Random();
+        _playerItemValue = random.Next(0, 4);
+    }
+    
     private void Check()
     {
         if (_playerInputs.dropAction.WasPressedThisFrame() && !_isPlayingAnim)
         {
-            StartCoroutine(PlayDrop());
+            photonView.RPC("PlayDrop", RpcTarget.All);
         }
         if (_playerInputs.danceAction.WasPressedThisFrame() && !_isPlayingAnim)
         {
-            StartCoroutine(PlayDance());
+            photonView.RPC("PlayDance", RpcTarget.All);
         }
         if (_playerInputs.waveAction.WasPressedThisFrame() && !_isPlayingAnim)
         {
-            StartCoroutine(PlayWave());
+            photonView.RPC("PlayWave", RpcTarget.All);
         }
 
         if (_playerInputs.pourAction.WasPressedThisFrame() && !_isPlayingAnim)
@@ -123,36 +128,58 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         }
         if (_playerInputs.pourAction.IsPressed())
         {
-            FillGlass();
+            //FillGlass();
         }
-        if (_playerInputs.pourAction.WasReleasedThisFrame())
+        if (_playerInputs.pourAction.WasReleasedThisFrame()  && photonView.IsMine)
         {
             _animator.SetBool(Pour, false);
             _isPlayingAnim = false;
         }
     }
     
-    private IEnumerator PlayDrop()
+    [PunRPC]
+    private void PlayDrop()
     {
         _isPlayingAnim = true;
         _animator.SetTrigger(Drop);
-        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
-        _isPlayingAnim = false;
     }
     
-    private IEnumerator PlayDance()
+    [PunRPC]
+    private void PlayDance()
     {
         _isPlayingAnim = true;
         _animator.SetTrigger(Dance);
-        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
-        _isPlayingAnim = false;
     }
     
-    private IEnumerator PlayWave()
+    [PunRPC]
+    private void PlayWave()
     {
         _isPlayingAnim = true;
         _animator.SetTrigger(Wave);
-        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+    }
+
+    [PunRPC]
+    private void AnimationTimer()
+    {
+        _timer += Time.deltaTime;
+        if (!(_timer >= _animator.GetCurrentAnimatorStateInfo(0).length)) return;
         _isPlayingAnim = false;
+        _timer = 0;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(filled.Value);
+            stream.SendNext(percentage);
+            this.Log($"is sending {filled.Value}");
+        }
+        else
+        {
+            filled.Value = (float) stream.ReceiveNext();
+            percentage = (float) stream.ReceiveNext();
+            this.Log($"is receiving {filled.Value}");
+        }
     }
 }

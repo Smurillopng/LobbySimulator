@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Live2D.Cubism.Core;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -10,30 +12,17 @@ public class Lobby : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TMP_Text player1, pingP1, player2, pingP2;
     [SerializeField] private Config gameConfig;
-
+    
     private Player _p1, _p2;
+    private GameObject _m1, _m2;
     private int _currentRoom;
     
     private void Update()
     {
         if (PhotonNetwork.CurrentRoom == null) return;
 
-        var players = PhotonNetwork.PlayerList;
-        foreach (var player in players)
-        {
-            if (player.IsMasterClient)
-            {
-                _p1 = player;
-                player1.text = _p1.NickName;
-                pingP1.text = PhotonNetwork.GetPing().ToString();
-            }
-            else
-            {
-                _p2 = player;
-                player2.text = _p2.NickName;
-                pingP2.text = PhotonNetwork.GetPing().ToString();
-            }
-        }
+        SetNames();
+        SetCups();
 
         if (_p1 is null)
         {
@@ -59,6 +48,43 @@ public class Lobby : MonoBehaviourPunCallbacks
         {
             this.Log("Trying to join room...");
             JoinRoom();
+        }
+    }
+
+    private void SetNames()
+    {
+        var players = PhotonNetwork.PlayerList;
+        foreach (var player in players)
+        {
+            if (player.IsMasterClient)
+            {
+                _p1 = player;
+                player1.text = _p1.NickName;
+                pingP1.text = PhotonNetwork.GetPing().ToString();
+            }
+            else
+            {
+                _p2 = player;
+                player2.text = _p2.NickName;
+                pingP2.text = PhotonNetwork.GetPing().ToString();
+            }
+        }
+    }
+
+    private void SetCups()
+    {
+        var players = PhotonNetwork.PlayerList;
+        foreach (var player in players)
+        {
+            if (player.IsMasterClient && _m1 != null)
+            {
+                _m1.transform.position = new Vector3(-6, -2, 0);
+            }
+            else
+            {
+                if (_m2 == null) return;
+                _m2.transform.position = new Vector3(6, -2, 0);
+            }
         }
     }
 
@@ -96,12 +122,14 @@ public class Lobby : MonoBehaviourPunCallbacks
             case 1:
                 this.Log("Player 1 joined");
                 _p1 = PhotonNetwork.LocalPlayer;
-                PhotonNetwork.Instantiate("cup_martini", new Vector3(-6, -2, 0), Quaternion.identity);
+                _m1 = PhotonNetwork.Instantiate("cup_martini",
+                    _p1.IsMasterClient ? new Vector3(-6, -2, 0) : new Vector3(6, -2, 0), Quaternion.identity);
                 break;
             case 2:
                 this.Log("Player 2 joined");
                 _p2 = PhotonNetwork.LocalPlayer;
-                PhotonNetwork.Instantiate("cup_martini", new Vector3(6, -2, 0), Quaternion.identity);
+                _m2 = PhotonNetwork.Instantiate("cup_martini",
+                    _p2.IsMasterClient ? new Vector3(-6, -2, 0) : new Vector3(6, -2, 0), Quaternion.identity);
                 break;
         }
     }
@@ -125,9 +153,15 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         if (Equals(otherPlayer, _p1))
+        {
             _p1 = null;
+            _m1 = _m2;
+            _m2 = null;
+        }
         else if (Equals(otherPlayer, _p2))
+        {
             _p2 = null;
+        }
     }
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList)

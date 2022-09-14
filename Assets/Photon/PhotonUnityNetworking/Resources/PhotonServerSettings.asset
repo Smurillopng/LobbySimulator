@@ -41,6 +41,17 @@ MonoBehaviour:
   - RespawnSpaceship
   - LateUpdate
   - GetColor
+  - PlayDance
+  - PlayDrop
+  - PlayWave
+  - EmptyGlass
+  - FillGlass
+  - GetItem
+  - RandomizeColor
+  - RandomizeItem
+  - AnimationTimer
+  - GlassLiquid
+  - Check
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
