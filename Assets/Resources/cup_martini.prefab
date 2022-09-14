@@ -6507,7 +6507,7 @@ MonoBehaviour:
   itemID: ParamItem
   glassEmptiness: ParamGlassEmptiness
   filledValue: 10
-  percentage: 0.2
+  percentage: 1
 --- !u!114 &1108222892126098889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6613,16 +6613,16 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 1
+    SynchronizeType: 2
     Name: Pour
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 2
     Name: Drop
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 2
     Name: Dance
   - Type: 9
-    SynchronizeType: 1
+    SynchronizeType: 2
     Name: Wave
   m_SynchronizeLayers:
   - SynchronizeType: 0

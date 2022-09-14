@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Live2D.Cubism.Core;
 using Photon.Pun;
+using Photon.Realtime;
 using Utils;
 using Random = System.Random;
 
@@ -33,7 +34,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         _animator = GetComponent<Animator>();
         _playerInputs = GetComponent<PlayerInputs>();
     }
-
+    
     private void Start()
     {
         if (photonView.IsMine)
@@ -50,6 +51,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void LateUpdate()
     {
+        filled.Value = _filledValue;
+        photonView.RPC(nameof(UpdateColorAndItem), RpcTarget.All);
         if (!photonView.IsMine) return;
         
         Check();
@@ -59,38 +62,32 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
             photonView.RPC(nameof(AnimationTimer), RpcTarget.All);
         }
         
-        
-        photonView.RPC(nameof(GlassLiquid), RpcTarget.All);
-        _filledValue = filled.Value;
+        photonView.RPC(nameof(Emptying), RpcTarget.All);
     }
     
     [PunRPC]
-    private void GlassLiquid()
+    private void Emptying()
     {
-        if (_isFull)
+        if (_isFull && _isPlayingAnim)
         {
-            _filledValue -= Time.deltaTime * percentage;
+            _filledValue -= Time.deltaTime * percentage / 2;
         }
         
         if (_filledValue <= 0)
         {
             _isFull = false;
-            _isRefilling = true;
-        }
-        
-        if (_isRefilling)
-        {
-            _filledValue += Time.deltaTime * percentage;
-            if (_filledValue >= filledValue)
-            {
-                _isRefilling = false;
-            }
         }
 
         if (_filledValue >= filledValue)
         {
             _isFull = true;
         }
+    }
+
+    [PunRPC]
+    private void Filling()
+    {
+        _filledValue += Time.deltaTime * percentage;
     }
     
     [PunRPC]
@@ -105,7 +102,21 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         var random = new Random();
         _playerItemValue = random.Next(0, 4);
     }
-    
+    [PunRPC]
+    private void UpdateColorAndItem()
+    {
+        if (photonView.IsMine)
+        {
+            playerColor.Value = _playerColorValue;
+            playerItem.Value = _playerItemValue;
+        }
+        else
+        {
+            playerColor.Value = _playerColorValue;
+            playerItem.Value = _playerItemValue;
+        }
+    }
+
     private void Check()
     {
         if (_playerInputs.dropAction.WasPressedThisFrame() && !_isPlayingAnim)
@@ -126,9 +137,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
             _animator.SetBool(Pour, true);
             _isPlayingAnim = true;
         }
-        if (_playerInputs.pourAction.IsPressed())
+        if (_playerInputs.pourAction.IsPressed() && _animator.GetBool(Pour).Equals(true))
         {
-            //FillGlass();
+            photonView.RPC(nameof(Filling), RpcTarget.All);
         }
         if (_playerInputs.pourAction.WasReleasedThisFrame()  && photonView.IsMine)
         {
@@ -169,17 +180,19 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
+        if (stream.IsWriting && photonView.IsMine)
         {
-            stream.SendNext(filled.Value);
-            stream.SendNext(percentage);
-            this.Log($"is sending {filled.Value}");
+            stream.SendNext(_filledValue);
+            stream.SendNext(_playerColorValue);
+            stream.SendNext(_playerItemValue);
+            this.Log($"is sending {_playerColorValue}");
         }
         else
         {
-            filled.Value = (float) stream.ReceiveNext();
-            percentage = (float) stream.ReceiveNext();
-            this.Log($"is receiving {filled.Value}");
+            _filledValue = (float) stream.ReceiveNext();
+            _playerColorValue = (float) stream.ReceiveNext();
+            _playerItemValue = (float) stream.ReceiveNext();
+            this.Log($"is receiving {_playerColorValue}");
         }
     }
 }
