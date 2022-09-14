@@ -93,13 +93,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     private void RandomizeColor()
     {
         var random = new Random();
-        _playerColorValue = random.Next(0, 22);
+        _playerColorValue = random.Next(1, 22);
     }
     [PunRPC]
     private void RandomizeItem()
     {
         var random = new Random();
-        _playerItemValue = random.Next(0, 5);
+        _playerItemValue = random.Next(1, 5);
     }
     [PunRPC]
     private void UpdateColorAndItem()
