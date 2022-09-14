@@ -6288,7 +6288,7 @@ GameObject:
   - component: {fileID: 7261188288571341267}
   - component: {fileID: -8521003455513120424}
   m_Layer: 0
-  m_Name: Cup_Martini
+  m_Name: cup_martini
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6499,10 +6499,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b9e9a62dec848509165968f32a5b93d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  playerColor: {fileID: 0}
-  playerItem: {fileID: 0}
-  filled: {fileID: 0}
   colorID: ParamDrinkColor
   itemID: ParamItem
   glassEmptiness: ParamGlassEmptiness

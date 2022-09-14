@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Live2D.Cubism.Core;
+﻿using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -10,7 +8,19 @@ using Utils;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private TMP_Text player1, pingP1, player2, pingP2;
+    [Header("Players Name"), Space(2)]
+    [SerializeField] private TMP_Text player1;
+    [SerializeField] private TMP_Text player2;
+
+    [Header("Players Ping"), Space(2)] 
+    [SerializeField] private TMP_Text pingP1;
+    [SerializeField] private TMP_Text pingP2;
+    
+    [Header("Players Spawn Position"), Space(2)]
+    [SerializeField] private Vector3 player1Spawn;
+    [SerializeField] private Vector3 player2Spawn;
+    
+    [Header("Room Settings"), Space(2)]
     [SerializeField] private Config gameConfig;
     
     private Player _p1, _p2;
@@ -78,12 +88,12 @@ public class Lobby : MonoBehaviourPunCallbacks
         {
             if (player.IsMasterClient && _m1 != null)
             {
-                _m1.transform.position = new Vector3(-6, -2, 0);
+                _m1.transform.position = player1Spawn;
             }
             else
             {
                 if (_m2 == null) return;
-                _m2.transform.position = new Vector3(6, -2, 0);
+                _m2.transform.position = player2Spawn;
             }
         }
     }
@@ -123,13 +133,13 @@ public class Lobby : MonoBehaviourPunCallbacks
                 this.Log("Player 1 joined");
                 _p1 = PhotonNetwork.LocalPlayer;
                 _m1 = PhotonNetwork.Instantiate("cup_martini",
-                    _p1.IsMasterClient ? new Vector3(-6, -2, 0) : new Vector3(6, -2, 0), Quaternion.identity);
+                    _p1.IsMasterClient ? player1Spawn : player2Spawn, Quaternion.identity);
                 break;
             case 2:
                 this.Log("Player 2 joined");
                 _p2 = PhotonNetwork.LocalPlayer;
                 _m2 = PhotonNetwork.Instantiate("cup_martini",
-                    _p2.IsMasterClient ? new Vector3(-6, -2, 0) : new Vector3(6, -2, 0), Quaternion.identity);
+                    _p2.IsMasterClient ? player1Spawn : player2Spawn, Quaternion.identity);
                 break;
         }
     }

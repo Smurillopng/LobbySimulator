@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using Live2D.Cubism.Core;
 using Photon.Pun;
-using Photon.Realtime;
 using Utils;
 using Random = System.Random;
 
 public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 {
-    [SerializeField] private CubismModel player;
-    [SerializeField] private CubismParameter playerColor, playerItem, filled;
     [SerializeField] private string colorID ="ParamDrinkColor";
     [SerializeField] private string itemID = "ParamItem";
     [SerializeField] private string glassEmptiness = "ParamGlassEmptiness";
     [SerializeField] private float filledValue = 10;
     [SerializeField] private float percentage;
 
+    private CubismModel _player;
+    private CubismParameter _playerColor, _playerItem, _filled;
     private Animator _animator;
     private PlayerInputs _playerInputs;
     private bool _isRefilling, _isFull, _isPlayingAnim;
@@ -27,10 +26,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Awake()
     {
-        player = this.FindCubismModel();
-        playerColor = player.Parameters.FindById(colorID);
-        playerItem = player.Parameters.FindById(itemID);
-        filled = player.Parameters.FindById(glassEmptiness);
+        _player = this.FindCubismModel();
+        _playerColor = _player.Parameters.FindById(colorID);
+        _playerItem = _player.Parameters.FindById(itemID);
+        _filled = _player.Parameters.FindById(glassEmptiness);
         _animator = GetComponent<Animator>();
         _playerInputs = GetComponent<PlayerInputs>();
     }
@@ -40,18 +39,18 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         if (photonView.IsMine)
         {
             photonView.RPC(nameof(RandomizeColor), RpcTarget.All);
-            playerColor.Value = _playerColorValue;
+            _playerColor.Value = _playerColorValue;
             photonView.RPC(nameof(RandomizeItem), RpcTarget.All);
-            playerItem.Value = _playerItemValue;
+            _playerItem.Value = _playerItemValue;
         }
 
-        filled.Value = filledValue;
-        _filledValue = filled.Value;
+        _filled.Value = filledValue;
+        _filledValue = _filled.Value;
     }
 
     private void LateUpdate()
     {
-        filled.Value = _filledValue;
+        _filled.Value = _filledValue;
         photonView.RPC(nameof(UpdateColorAndItem), RpcTarget.All);
         if (!photonView.IsMine) return;
         
@@ -107,13 +106,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (photonView.IsMine)
         {
-            playerColor.Value = _playerColorValue;
-            playerItem.Value = _playerItemValue;
+            _playerColor.Value = _playerColorValue;
+            _playerItem.Value = _playerItemValue;
         }
         else
         {
-            playerColor.Value = _playerColorValue;
-            playerItem.Value = _playerItemValue;
+            _playerColor.Value = _playerColorValue;
+            _playerItem.Value = _playerItemValue;
         }
     }
 
