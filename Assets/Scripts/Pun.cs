@@ -1,16 +1,27 @@
-﻿using Photon.Pun;
+﻿/*
+ * Created by: Sérgio Murillo da Costa Faria
+ */
+
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using Utils;
 
+// Esse script é responsável por conectar o jogador ao servidor Photon e por gerenciar a cena MainMenu
 public class Pun : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TMP_InputField playerName;
 
+    // Conecta o jogador ao servidor Photon ao iniciar o jogo
     public void Start() => PhotonNetwork.ConnectUsingSettings();
-    public override void OnConnectedToMaster() => PhotonNetwork.JoinLobby();
-    public override void OnJoinedLobby() => this.Log("Joined Lobby");
 
+    #region Métodos
+
+    // Coloca o jogador em um lobby
+    public override void OnConnectedToMaster() => PhotonNetwork.JoinLobby();
+    public override void OnJoinedLobby() => this.Log("Joined Lobby"); // Debug
+
+    // Carrega a cena Lobby e salva o nome do jogador
     public void LoadLobby()
     {
         if(playerName != null && !string.IsNullOrEmpty(playerName.text))
@@ -24,8 +35,11 @@ public class Pun : MonoBehaviourPunCallbacks
     
     public void ExitGame()
     {
-        PhotonNetwork.Disconnect();
+        PhotonNetwork.Disconnect(); // Desconecta o jogador do servidor Photon
         this.Log("Exiting game");
-        Application.Quit();
+        Application.Quit(); // Fecha o jogo
     }
+
+    #endregion
+    
 }
