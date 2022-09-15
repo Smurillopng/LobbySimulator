@@ -8,8 +8,9 @@ using Utils;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
-    [Header("Room Name")]
+    [Header("Room")]
     [SerializeField] private TMP_Text roomNameText;
+    [SerializeField] private GameObject controlsPanel;
     
     [Header("Players Name"), Space(2)]
     [SerializeField] private TMP_Text player1;
@@ -63,6 +64,8 @@ public class Lobby : MonoBehaviourPunCallbacks
             JoinRoom();
         }
     }
+
+    public void ShowControls() => controlsPanel.SetActive(!controlsPanel.activeSelf);
 
     private void SetNames()
     {
