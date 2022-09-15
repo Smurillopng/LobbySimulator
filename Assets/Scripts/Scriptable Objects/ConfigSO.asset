@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ConfigSO
   m_EditorClassIdentifier: 
   maxPlayers: 2
-  roomPrefixName: Room_
+  roomPrefixName: Lobby_
   roomStartNumber: 1

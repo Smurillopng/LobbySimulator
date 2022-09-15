@@ -8,6 +8,9 @@ using Utils;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
+    [Header("Room Name")]
+    [SerializeField] private TMP_Text roomNameText;
+    
     [Header("Players Name"), Space(2)]
     [SerializeField] private TMP_Text player1;
     [SerializeField] private TMP_Text player2;
@@ -126,7 +129,7 @@ public class Lobby : MonoBehaviourPunCallbacks
         this.Log("Joined room");
         if (PhotonNetwork.InRoom)
             _currentRoom = gameConfig.roomStartNumber;
-
+        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
         switch (PhotonNetwork.CurrentRoom.PlayerCount)
         {
             case 1:
